@@ -1,4 +1,4 @@
-name: Linting and jest-testing pipeline
+name: Linting and testing pipeline
 
 on:
   push:

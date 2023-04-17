@@ -1,4 +1,4 @@
-name: Deployment
+name: E2E and deployment
 on:
   push:
     branches:

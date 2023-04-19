@@ -7,7 +7,7 @@ on:
     branches: [master]
     types: [opened, synchronize]
 jobs:
- deploy:
+  deploy:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -22,15 +22,20 @@ jobs:
           build: npm run build
           start: npm run start-prod
           wait-on: 'http://localhost:5000'
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.61.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ github.event_name == 'push' }}
       - name: Deploy (render)
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
+        if: ${{ github.event_name == 'push' }}
+  tag_release:
+    needs: [deploy]
+    runs-on: ubuntu-20.04
+    steps:      
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.61.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: 'patch'
         if: ${{ github.event_name == 'push' }}
      

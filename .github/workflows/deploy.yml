@@ -22,10 +22,15 @@ jobs:
           build: npm run build
           start: npm run start-prod
           wait-on: 'http://localhost:5000'
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.61.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ github.event_name == 'push' }}
       - name: Deploy (render)
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-        if: ${{ github.event_name == 'push' }}    
+        if: ${{ github.event_name == 'push' }}
      

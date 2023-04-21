@@ -38,14 +38,6 @@ jobs:
           description: 'to https://fullstackhki11.onrender.com/ by XX'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         if: ${{ success() }}
-      - name: Failure Notification
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          severity: error
-          text: 'Deployment failed'
-          description: 'commit ' + ${{ github.event.pull_request.head.sha }}
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-        if: ${{ failure() }}
   tag_release:
     needs: [deploy]
     runs-on: ubuntu-20.04

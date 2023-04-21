@@ -1,9 +1,8 @@
 name: Service healthcheck
 
 on:
-  pull_request:
-    branches: [master]
-    types: [opened, synchronize]
+  schedule:
+    - cron:  '0 12 * * *'
 jobs:
   scheduled_healthcheck:
     runs-on: ubuntu-20.04

@@ -25,7 +25,7 @@ jobs:
       - name: Deploy (render)
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          service-id: ${{ secrets.RENDER_SERVICE_ID_error }}
           api-key: ${{ secrets.RENDER_API_KEY }}
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}  
@@ -44,7 +44,7 @@ jobs:
           severity: error
           details: 'Deployment failed'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-        if: ${{ github.event_name == 'push' && !(contains(github.event.head_commit.message, 'skip')) && success() }}  
+        if: ${{ github.event_name == 'push' && !(contains(github.event.head_commit.message, 'skip')) && failure() }}  
   tag_release:
     needs: [deploy]
     runs-on: ubuntu-20.04

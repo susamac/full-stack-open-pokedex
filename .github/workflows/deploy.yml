@@ -37,7 +37,14 @@ jobs:
           text: 'A new version of Pokedex deployed'
           description: 'to https://fullstackhki11.onrender.com/ by XX'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-        if: ${{ success() }}
+        if: ${{ github.event_name == 'push' && !(contains(github.event.head_commit.message, 'skip')) && success() }}
+      - name: Failure Notification
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: error
+          details: 'Deployment failed'
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        if: ${{ github.event_name == 'push' && !(contains(github.event.head_commit.message, 'skip')) && success() }}  
   tag_release:
     needs: [deploy]
     runs-on: ubuntu-20.04

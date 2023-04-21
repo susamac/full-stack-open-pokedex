@@ -25,7 +25,7 @@ jobs:
       - name: Deploy (render)
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID_error }}
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}  

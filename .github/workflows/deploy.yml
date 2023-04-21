@@ -43,7 +43,9 @@ jobs:
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-        if: ${{ github.event_name == 'push' && !(contains(github.event.commits.*.message[0], 'skip')) }}
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}  
+        if: ${{ github.event_name == 'push' && !(contains(github.event.head_commit.message, 'skip')) }}
   tag_release:
     needs: [deploy]
     runs-on: ubuntu-20.04
@@ -56,6 +58,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
           WITH_V: "true"
-        if: ${{ github.event_name == 'push' && !(contains(github.event.commits.*.message[0], 'skip')) }}
-
-     
+        if: (github.event_name == 'push' && !contains(github.event.head_commit.message, 'skip'))
